@@ -1,5 +1,7 @@
-
 package com.isw;
+
+import com.isw.view.PantallaPrincipal;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -8,6 +10,8 @@ package com.isw;
 public class InscripcionTallerISW {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        SwingUtilities.invokeLater(() -> {
+            new PantallaPrincipal().setVisible(true);
+        });
     }
 }
