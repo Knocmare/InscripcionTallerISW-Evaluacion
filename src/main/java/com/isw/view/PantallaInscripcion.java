@@ -7,8 +7,6 @@ import com.isw.model.InscripcionException;
 import com.isw.model.Taller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
@@ -28,6 +26,9 @@ public class PantallaInscripcion extends javax.swing.JFrame {
         inicializarVista();
     }
 
+    /**
+     * Inicializa las listas, botones, y el Scroll.
+     */
     private void inicializarVista() {
         // Crear lista de talleres
         listaTaller = new JList<>(controller.obtenerTalleres().toArray(new Taller[0]));

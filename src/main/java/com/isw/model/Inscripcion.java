@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
  * @author Ángel Ruíz García - 00000248171
  */
 public class Inscripcion {
+
     private Alumno alumno;
     private Taller taller;
     private LocalDateTime fecha;
@@ -18,6 +19,11 @@ public class Inscripcion {
         this.fecha = LocalDateTime.now();
     }
 
+    /**
+     * Regresa una cadena de texto que representa el ticket.
+     *
+     * @return Ticket generado
+     */
     public String generarTicket() {
         return "=== TICKET DE INSCRIPCIÓN ===\n"
                 + "Folio: " + Math.abs(fecha.hashCode()) + "\n"

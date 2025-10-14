@@ -6,6 +6,7 @@ package com.isw.model;
  * @author Ángel Ruíz García - 00000248171
  */
 public class Alumno {
+
     private String id;
     private String nombre;
     private int semestre;
@@ -34,6 +35,11 @@ public class Alumno {
         return programa;
     }
 
+    /**
+     * Regresa una cadena de texto con los datos del alumno.
+     *
+     * @return Datos del alumno
+     */
     public String mostrarDatos() {
         return "Alumno: " + nombre + " (" + id + ")\n"
                 + "Semestre: " + semestre + "\n"

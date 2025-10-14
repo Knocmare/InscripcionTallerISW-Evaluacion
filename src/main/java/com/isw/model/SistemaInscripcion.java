@@ -16,6 +16,9 @@ public class SistemaInscripcion {
     private List<Alumno> alumnos = new ArrayList<>();
     private List<Inscripcion> inscripciones = new ArrayList<>();
 
+    /**
+     * Contructor que inicializa las listas con los datos.
+     */
     public SistemaInscripcion() {
         // Datos de ejemplo
         talleres.add(new Taller(1, "Desarrollo Web", "Aprende HTML, CSS y JS",
@@ -26,18 +29,43 @@ public class SistemaInscripcion {
         alumnos.add(new Alumno("00000263591", "Ana López", 4, "Sistemas Computacionales"));
     }
 
+    /**
+     * Obtiene todos los talles en una lista.
+     *
+     * @return Lista de talleres
+     */
     public List<Taller> obtenerTalleres() {
         return talleres;
     }
 
+    /**
+     * Busca al alumno por medio de su ID.
+     *
+     * @param id ID del alumno
+     * @return Regresa al alumno buscado
+     */
     public Alumno buscarAlumno(String id) {
         return alumnos.stream().filter(a -> a.getId().equalsIgnoreCase(id)).findFirst().orElse(null);
     }
 
+    /**
+     * Busca el taller por medio de su ID.
+     *
+     * @param id ID del taller
+     * @return Regresa el taller buscado
+     */
     public Taller buscarTaller(int id) {
         return talleres.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
+    /**
+     * Proceso de inscribir al alumno en el taller.
+     *
+     * @param idAlumno ID del alumno
+     * @param idTaller ID del taller
+     * @return Regresa la inscripcion
+     * @throws InscripcionException Si la inscripcion presenta un error
+     */
     public Inscripcion inscribir(String idAlumno, int idTaller) throws InscripcionException {
         Alumno alumno = buscarAlumno(idAlumno);
         Taller taller = buscarTaller(idTaller);
