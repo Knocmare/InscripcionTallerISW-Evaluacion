@@ -10,16 +10,40 @@ import java.time.LocalDate;
 public class Taller {
     private int id;
     private String nombre;
-    private Instructor instructor;
+    private String descripcion;
     private LocalDate fecha;
     private String horario;
+    private Instructor instructor;
+    private int cupo;
+    private int inscritos;
 
-    public Taller(int id, String nombre, Instructor instructor, LocalDate fecha, String horario) {
+    public Taller(int id, String nombre, String descripcion, LocalDate fecha, String horario, Instructor instructor, int cupo) {
         this.id = id;
         this.nombre = nombre;
-        this.instructor = instructor;
+        this.descripcion = descripcion;
         this.fecha = fecha;
         this.horario = horario;
+        this.instructor = instructor;
+        this.cupo = cupo;
+        this.inscritos = 0;
+    }
+
+    public boolean hayCupo() {
+        return inscritos < cupo;
+    }
+
+    public void inscribirAlumno() {
+        if (hayCupo()) {
+            inscritos++;
+        }
+    }
+
+    public String detalles() {
+        return nombre + "\\nInstructor: " + instructor.getNombre()
+                + "\\nFecha: " + fecha
+                + "\\nHorario: " + horario
+                + "\\nCupo disponible: " + (cupo - inscritos)
+                + "\\n\\n" + descripcion;
     }
 
     public int getId() {
@@ -33,18 +57,4 @@ public class Taller {
     public Instructor getInstructor() {
         return instructor;
     }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public String getHorario() {
-        return horario;
-    }
-
-    @Override
-    public String toString() {
-        return "Taller{" + "id=" + id + ", nombre=" + nombre + ", instructor=" + instructor + ", fecha=" + fecha + ", horario=" + horario + '}';
-    }
-    
 }

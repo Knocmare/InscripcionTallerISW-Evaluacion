@@ -34,9 +34,14 @@ public class Alumno {
         return programa;
     }
 
+    public String mostrarDatos() {
+        return "Alumno: " + nombre + " (" + id + ")\\n"
+                + "Semestre: " + semestre + "\\n"
+                + "Programa: " + programa;
+    }
+
     @Override
     public String toString() {
-        return "Alumno{" + "id=" + id + ", nombre=" + nombre + ", semestre=" + semestre + ", programa=" + programa + '}';
+        return nombre;
     }
-    
 }
