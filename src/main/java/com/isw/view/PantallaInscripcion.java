@@ -81,6 +81,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                 try {
                     Inscripcion ins = controller.inscribir(id, taller.getId());
                     txaInfoAlumno.setText(ins.generarTicket());
+                    txaDetallesTaller.setText(taller.detalles()); // Muestra detalles actualizados
                     JOptionPane.showMessageDialog(PantallaInscripcion.this, "Inscripción realizada con éxito.");
                 } catch (InscripcionException ex) {
                     JOptionPane.showMessageDialog(PantallaInscripcion.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
