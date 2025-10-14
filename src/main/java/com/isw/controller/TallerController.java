@@ -2,33 +2,33 @@ package com.isw.controller;
 
 import com.isw.model.Alumno;
 import com.isw.model.Inscripcion;
+import com.isw.model.SistemaInscripcion;
 import com.isw.model.Taller;
 import java.util.List;
 
 /**
  * Esta clase es el controlador que maneja la lógica de inscripción.
+ * Controlador: coordina las llamadas entre la vista y el modelo.
  *
  * @author Ángel Ruíz García - 00000248171
  */
 public class TallerController {
-    
+
+    private SistemaInscripcion sistema;
+
+    public TallerController() {
+        sistema = new SistemaInscripcion();
+    }
+
     public List<Taller> obtenerTalleres() {
-        
-        return null;
+        return sistema.obtenerTalleres();
     }
-    
-    public Taller obtenerTallerPorId(int id) {
-        
-        return null;
-    }
-    
+
     public Alumno buscarAlumno(String id) {
-        
-        return null;
+        return sistema.buscarAlumno(id);
     }
-    
-    public Inscripcion inscribirAlumno(String idAlumno, int idTaller) {
-        
-        return null;
+
+    public Inscripcion inscribir(String idAlumno, int idTaller) {
+        return sistema.inscribir(idAlumno, idTaller);
     }
 }
