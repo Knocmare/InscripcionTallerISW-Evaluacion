@@ -20,10 +20,18 @@ public class Inscripcion {
 
     public String generarTicket() {
         return "=== TICKET DE INSCRIPCIÓN ===\n"
-                + "Folio: " + fecha.hashCode() + "\n"
+                + "Folio: " + Math.abs(fecha.hashCode()) + "\n"
                 + "Fecha: " + fecha + "\n\n"
                 + alumno.mostrarDatos() + "\n\n"
                 + "Taller: " + taller.getNombre() + "\n"
                 + "Instructor: " + taller.getInstructor().getNombre();
+    }
+
+    public Alumno getAlumno() {
+        return alumno;
+    }
+
+    public Taller getTaller() {
+        return taller;
     }
 }

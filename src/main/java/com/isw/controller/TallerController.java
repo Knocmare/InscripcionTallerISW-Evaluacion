@@ -2,6 +2,7 @@ package com.isw.controller;
 
 import com.isw.model.Alumno;
 import com.isw.model.Inscripcion;
+import com.isw.model.InscripcionException;
 import com.isw.model.SistemaInscripcion;
 import com.isw.model.Taller;
 import java.util.List;
@@ -28,7 +29,7 @@ public class TallerController {
         return sistema.buscarAlumno(id);
     }
 
-    public Inscripcion inscribir(String idAlumno, int idTaller) {
+    public Inscripcion inscribir(String idAlumno, int idTaller) throws InscripcionException {
         return sistema.inscribir(idAlumno, idTaller);
     }
 }

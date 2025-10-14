@@ -14,13 +14,14 @@ public class SistemaInscripcion {
 
     private List<Taller> talleres = new ArrayList<>();
     private List<Alumno> alumnos = new ArrayList<>();
+    private List<Inscripcion> inscripciones = new ArrayList<>();
 
     public SistemaInscripcion() {
         // Datos de ejemplo
         talleres.add(new Taller(1, "Desarrollo Web", "Aprende HTML, CSS y JS",
-                LocalDate.of(2025, 3, 12), "10:00 - 12:00", new Instructor("Mtro. Ruiz"), 25));
+                LocalDate.of(2025, 3, 12), "10:00 - 12:00", new Instructor("Mtro. Ruiz"), 2));
         talleres.add(new Taller(2, "Bases de Datos", "Introducción a SQL y modelado",
-                LocalDate.of(2025, 3, 13), "09:00 - 11:00", new Instructor("Mtra. Gómez"), 20));
+                LocalDate.of(2025, 3, 13), "09:00 - 11:00", new Instructor("Mtra. Gómez"), 1));
         alumnos.add(new Alumno("00000235678", "Carlos Pérez", 5, "Ingeniería de Software"));
         alumnos.add(new Alumno("00000263591", "Ana López", 4, "Sistemas Computacionales"));
     }
@@ -37,13 +38,36 @@ public class SistemaInscripcion {
         return talleres.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
-    public Inscripcion inscribir(String idAlumno, int idTaller) {
-        Alumno a = buscarAlumno(idAlumno);
-        Taller t = buscarTaller(idTaller);
-        if (a != null && t != null && t.hayCupo()) {
-            t.inscribirAlumno();
-            return new Inscripcion(a, t);
+    public Inscripcion inscribir(String idAlumno, int idTaller) throws InscripcionException {
+        Alumno alumno = buscarAlumno(idAlumno);
+        Taller taller = buscarTaller(idTaller);
+
+        if (alumno == null) {
+            throw new InscripcionException("El alumno no existe.");
         }
-        return null;
+        if (taller == null) {
+            throw new InscripcionException("El taller no existe.");
+        }
+
+        // Verificar si ya está inscrito
+        boolean yaInscrito = inscripciones.stream()
+                .anyMatch(inscripcion -> inscripcion != null
+                && inscripcion.getAlumno().getId().equalsIgnoreCase(idAlumno)
+                && inscripcion.getTaller().getId() == idTaller);
+
+        if (yaInscrito) {
+            throw new InscripcionException("El alumno ya está inscrito en este taller.");
+        }
+
+        // Verificar cupo
+        if (!taller.hayCupo()) {
+            throw new InscripcionException("No hay cupo disponible en este taller.");
+        }
+
+        // Crear inscripción nueva
+        taller.inscribirAlumno();
+        Inscripcion ins = new Inscripcion(alumno, taller);
+        inscripciones.add(ins);
+        return ins;
     }
 }

@@ -155,7 +155,7 @@
                               <Component id="lblDetalles" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jTextArea1" pref="321" max="32767" attributes="0"/>
+                          <Component id="txaDetallesTaller" pref="321" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -167,7 +167,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblDetalles" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextArea1" max="32767" attributes="0"/>
+                      <Component id="txaDetallesTaller" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -185,7 +185,7 @@
                 <Property name="text" type="java.lang.String" value="Detalles del taller:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextArea" name="jTextArea1">
+            <Component class="javax.swing.JTextArea" name="txaDetallesTaller">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -217,7 +217,7 @@
                               <Component id="lblAlumno" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jTextArea2" alignment="0" pref="309" max="32767" attributes="0"/>
+                          <Component id="txaInfoAlumno" alignment="0" pref="309" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -234,7 +234,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblAlumno" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextArea2" min="-2" pref="375" max="-2" attributes="0"/>
+                      <Component id="txaInfoAlumno" min="-2" pref="375" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnInscribirAlumno" pref="38" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -254,7 +254,7 @@
                 <Property name="text" type="java.lang.String" value="Alumno"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextArea" name="jTextArea2">
+            <Component class="javax.swing.JTextArea" name="txaInfoAlumno">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">

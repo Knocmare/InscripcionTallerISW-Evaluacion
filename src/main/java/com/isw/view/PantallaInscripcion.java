@@ -3,9 +3,12 @@ package com.isw.view;
 import com.isw.controller.TallerController;
 import com.isw.model.Alumno;
 import com.isw.model.Inscripcion;
+import com.isw.model.InscripcionException;
 import com.isw.model.Taller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
@@ -18,7 +21,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
 
     private TallerController controller;
     private JList<Taller> listaTaller;
-    
+
     public PantallaInscripcion() {
         initComponents();
         controller = new TallerController();
@@ -35,7 +38,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
         listaTaller.addListSelectionListener(e -> {
             Taller t = listaTaller.getSelectedValue();
             if (t != null) {
-                jTextArea1.setText(t.detalles()); // Muestra detalles
+                txaDetallesTaller.setText(t.detalles()); // Muestra detalles
             }
         });
 
@@ -51,9 +54,9 @@ public class PantallaInscripcion extends javax.swing.JFrame {
 
                 Alumno alumno = controller.buscarAlumno(id);
                 if (alumno != null) {
-                    jTextArea2.setText(alumno.mostrarDatos());
+                    txaInfoAlumno.setText(alumno.mostrarDatos());
                 } else {
-                    jTextArea2.setText("No se encontró ningún alumno con ese ID.");
+                    txaInfoAlumno.setText("No se encontró ningún alumno con ese ID.");
                 }
             }
         });
@@ -63,18 +66,24 @@ public class PantallaInscripcion extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String id = txtID.getText().trim();
-                Taller t = listaTaller.getSelectedValue();
+                Taller taller = listaTaller.getSelectedValue();
 
-                if (id.isEmpty() || t == null) {
-                    JOptionPane.showMessageDialog(PantallaInscripcion.this, "Selecciona un taller e ingresa un ID válido.");
+                if (taller == null) {
+                    JOptionPane.showMessageDialog(PantallaInscripcion.this, "Selecciona un taller");
                     return;
                 }
 
-                Inscripcion ins = controller.inscribir(id, t.getId());
-                if (ins != null) {
-                    jTextArea2.setText(ins.generarTicket());
-                } else {
-                    JOptionPane.showMessageDialog(PantallaInscripcion.this, "Error al inscribir: cupo lleno o alumno no encontrado.");
+                if (id.isEmpty()) {
+                    JOptionPane.showMessageDialog(PantallaInscripcion.this, "Ingresa un ID.");
+                    return;
+                }
+
+                try {
+                    Inscripcion ins = controller.inscribir(id, taller.getId());
+                    txaInfoAlumno.setText(ins.generarTicket());
+                    JOptionPane.showMessageDialog(PantallaInscripcion.this, "Inscripción realizada con éxito.");
+                } catch (InscripcionException ex) {
+                    JOptionPane.showMessageDialog(PantallaInscripcion.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -95,10 +104,10 @@ public class PantallaInscripcion extends javax.swing.JFrame {
         listaTalleres = new javax.swing.JScrollPane();
         panelTallerDetalles = new javax.swing.JPanel();
         lblDetalles = new javax.swing.JLabel();
-        jTextArea1 = new javax.swing.JTextArea();
+        txaDetallesTaller = new javax.swing.JTextArea();
         panelAlumnoInfo = new javax.swing.JPanel();
         lblAlumno = new javax.swing.JLabel();
-        jTextArea2 = new javax.swing.JTextArea();
+        txaInfoAlumno = new javax.swing.JTextArea();
         btnInscribirAlumno = new javax.swing.JButton();
         panelInscribir = new javax.swing.JPanel();
         btnBuscarAlumno1 = new javax.swing.JButton();
@@ -148,11 +157,11 @@ public class PantallaInscripcion extends javax.swing.JFrame {
         lblDetalles.setForeground(new java.awt.Color(255, 102, 0));
         lblDetalles.setText("Detalles del taller:");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(191, 192, 192));
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextArea1.setRows(5);
+        txaDetallesTaller.setEditable(false);
+        txaDetallesTaller.setBackground(new java.awt.Color(191, 192, 192));
+        txaDetallesTaller.setColumns(20);
+        txaDetallesTaller.setForeground(new java.awt.Color(255, 255, 255));
+        txaDetallesTaller.setRows(5);
 
         javax.swing.GroupLayout panelTallerDetallesLayout = new javax.swing.GroupLayout(panelTallerDetalles);
         panelTallerDetalles.setLayout(panelTallerDetallesLayout);
@@ -164,7 +173,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                     .addGroup(panelTallerDetallesLayout.createSequentialGroup()
                         .addComponent(lblDetalles)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jTextArea1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE))
+                    .addComponent(txaDetallesTaller, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelTallerDetallesLayout.setVerticalGroup(
@@ -173,7 +182,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblDetalles)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextArea1)
+                .addComponent(txaDetallesTaller)
                 .addContainerGap())
         );
 
@@ -183,11 +192,11 @@ public class PantallaInscripcion extends javax.swing.JFrame {
         lblAlumno.setForeground(new java.awt.Color(255, 102, 0));
         lblAlumno.setText("Alumno");
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setBackground(new java.awt.Color(191, 192, 192));
-        jTextArea2.setColumns(20);
-        jTextArea2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextArea2.setRows(5);
+        txaInfoAlumno.setEditable(false);
+        txaInfoAlumno.setBackground(new java.awt.Color(191, 192, 192));
+        txaInfoAlumno.setColumns(20);
+        txaInfoAlumno.setForeground(new java.awt.Color(255, 255, 255));
+        txaInfoAlumno.setRows(5);
 
         btnInscribirAlumno.setBackground(new java.awt.Color(79, 93, 117));
         btnInscribirAlumno.setForeground(new java.awt.Color(255, 255, 255));
@@ -203,7 +212,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                     .addGroup(panelAlumnoInfoLayout.createSequentialGroup()
                         .addComponent(lblAlumno)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jTextArea2, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE))
+                    .addComponent(txaInfoAlumno, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAlumnoInfoLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -216,7 +225,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblAlumno)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextArea2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txaInfoAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnInscribirAlumno, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                 .addContainerGap())
@@ -303,8 +312,6 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarAlumno1;
     private javax.swing.JButton btnInscribirAlumno;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JLabel lblAlumno;
     private javax.swing.JLabel lblDetalles;
     private javax.swing.JLabel lblDisponibles;
@@ -314,6 +321,8 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     private javax.swing.JPanel panelInscribir;
     private javax.swing.JPanel panelTallerDetalles;
     private javax.swing.JPanel panelTalleres;
+    private javax.swing.JTextArea txaDetallesTaller;
+    private javax.swing.JTextArea txaInfoAlumno;
     private javax.swing.JTextField txtID;
     // End of variables declaration//GEN-END:variables
 }
