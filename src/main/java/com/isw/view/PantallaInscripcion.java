@@ -1,16 +1,83 @@
 package com.isw.view;
 
+import com.isw.controller.TallerController;
+import com.isw.model.Alumno;
+import com.isw.model.Inscripcion;
+import com.isw.model.Taller;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+
 /**
  *
  * @author Ángel Ruíz García - 00000248171
  */
-public class PantallaPrincipal extends javax.swing.JFrame {
+public class PantallaInscripcion extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PantallaPrincipal
-     */
-    public PantallaPrincipal() {
+    private TallerController controller;
+    private JList<Taller> listaTaller;
+    
+    public PantallaInscripcion() {
         initComponents();
+        controller = new TallerController();
+        inicializarVista();
+    }
+
+    private void inicializarVista() {
+        // Crear lista de talleres
+        listaTaller = new JList<>(controller.obtenerTalleres().toArray(new Taller[0]));
+        listaTaller.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listaTalleres.setViewportView(listaTaller);
+
+        // Usuario selecciona un taller
+        listaTaller.addListSelectionListener(e -> {
+            Taller t = listaTaller.getSelectedValue();
+            if (t != null) {
+                jTextArea1.setText(t.detalles()); // Muestra detalles
+            }
+        });
+
+        // Buscar alumno
+        btnBuscarAlumno1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String id = txtID.getText().trim();
+                if (id.isEmpty()) {
+                    JOptionPane.showMessageDialog(PantallaInscripcion.this, "Por favor ingresa un ID de alumno.");
+                    return;
+                }
+
+                Alumno alumno = controller.buscarAlumno(id);
+                if (alumno != null) {
+                    jTextArea2.setText(alumno.mostrarDatos());
+                } else {
+                    jTextArea2.setText("No se encontró ningún alumno con ese ID.");
+                }
+            }
+        });
+
+        // Inscribir alumno
+        btnInscribirAlumno.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String id = txtID.getText().trim();
+                Taller t = listaTaller.getSelectedValue();
+
+                if (id.isEmpty() || t == null) {
+                    JOptionPane.showMessageDialog(PantallaInscripcion.this, "Selecciona un taller e ingresa un ID válido.");
+                    return;
+                }
+
+                Inscripcion ins = controller.inscribir(id, t.getId());
+                if (ins != null) {
+                    jTextArea2.setText(ins.generarTicket());
+                } else {
+                    JOptionPane.showMessageDialog(PantallaInscripcion.this, "Error al inscribir: cupo lleno o alumno no encontrado.");
+                }
+            }
+        });
     }
 
     /**
@@ -32,15 +99,25 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         panelAlumnoInfo = new javax.swing.JPanel();
         lblAlumno = new javax.swing.JLabel();
         jTextArea2 = new javax.swing.JTextArea();
+        btnInscribirAlumno = new javax.swing.JButton();
         panelInscribir = new javax.swing.JPanel();
+        btnBuscarAlumno1 = new javax.swing.JButton();
+        txtID = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        panelFondo.setBackground(new java.awt.Color(255, 255, 255));
+        panelFondo.setBackground(new java.awt.Color(45, 49, 66));
+
+        panelTalleres.setBackground(new java.awt.Color(191, 192, 192));
 
         lblDisponibles.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblDisponibles.setForeground(new java.awt.Color(255, 102, 0));
         lblDisponibles.setText("Talleres disponibles:");
+
+        listaTalleres.setBackground(new java.awt.Color(191, 192, 192));
+        listaTalleres.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout panelTalleresLayout = new javax.swing.GroupLayout(panelTalleres);
         panelTalleres.setLayout(panelTalleresLayout);
@@ -65,11 +142,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        panelTallerDetalles.setBackground(new java.awt.Color(191, 192, 192));
+
         lblDetalles.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblDetalles.setForeground(new java.awt.Color(255, 102, 0));
         lblDetalles.setText("Detalles del taller:");
 
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(191, 192, 192));
         jTextArea1.setColumns(20);
+        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
         jTextArea1.setRows(5);
 
         javax.swing.GroupLayout panelTallerDetallesLayout = new javax.swing.GroupLayout(panelTallerDetalles);
@@ -95,12 +177,21 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        panelAlumnoInfo.setBackground(new java.awt.Color(191, 192, 192));
+
         lblAlumno.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblAlumno.setForeground(new java.awt.Color(255, 102, 0));
         lblAlumno.setText("Alumno");
 
+        jTextArea2.setEditable(false);
+        jTextArea2.setBackground(new java.awt.Color(191, 192, 192));
         jTextArea2.setColumns(20);
+        jTextArea2.setForeground(new java.awt.Color(255, 255, 255));
         jTextArea2.setRows(5);
+
+        btnInscribirAlumno.setBackground(new java.awt.Color(79, 93, 117));
+        btnInscribirAlumno.setForeground(new java.awt.Color(255, 255, 255));
+        btnInscribirAlumno.setText("Inscribirse");
 
         javax.swing.GroupLayout panelAlumnoInfoLayout = new javax.swing.GroupLayout(panelAlumnoInfo);
         panelAlumnoInfo.setLayout(panelAlumnoInfoLayout);
@@ -114,6 +205,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jTextArea2, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAlumnoInfoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnInscribirAlumno)
+                .addGap(111, 111, 111))
         );
         panelAlumnoInfoLayout.setVerticalGroup(
             panelAlumnoInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,19 +216,43 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblAlumno)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextArea2, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
+                .addComponent(jTextArea2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnInscribirAlumno, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        panelInscribir.setBackground(new java.awt.Color(191, 192, 192));
+
+        btnBuscarAlumno1.setBackground(new java.awt.Color(79, 93, 117));
+        btnBuscarAlumno1.setForeground(new java.awt.Color(255, 255, 255));
+        btnBuscarAlumno1.setText("Buscar Alumno");
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Ingresa el ID del alumno:");
 
         javax.swing.GroupLayout panelInscribirLayout = new javax.swing.GroupLayout(panelInscribir);
         panelInscribir.setLayout(panelInscribirLayout);
         panelInscribirLayout.setHorizontalGroup(
             panelInscribirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInscribirLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnBuscarAlumno1)
+                .addGap(316, 316, 316))
         );
         panelInscribirLayout.setVerticalGroup(
             panelInscribirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInscribirLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelInscribirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnBuscarAlumno1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtID, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout panelFondoLayout = new javax.swing.GroupLayout(panelFondo);
@@ -178,9 +297,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscarAlumno1;
+    private javax.swing.JButton btnInscribirAlumno;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JLabel lblAlumno;
@@ -192,5 +314,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelInscribir;
     private javax.swing.JPanel panelTallerDetalles;
     private javax.swing.JPanel panelTalleres;
+    private javax.swing.JTextField txtID;
     // End of variables declaration//GEN-END:variables
 }

@@ -39,11 +39,11 @@ public class Taller {
     }
 
     public String detalles() {
-        return nombre + "\\nInstructor: " + instructor.getNombre()
-                + "\\nFecha: " + fecha
-                + "\\nHorario: " + horario
-                + "\\nCupo disponible: " + (cupo - inscritos)
-                + "\\n\\n" + descripcion;
+        return nombre + "\nInstructor: " + instructor.getNombre()
+                + "\nFecha: " + fecha
+                + "\nHorario: " + horario
+                + "\nCupo disponible: " + (cupo - inscritos)
+                + "\n\n" + descripcion;
     }
 
     public int getId() {
@@ -56,5 +56,10 @@ public class Taller {
 
     public Instructor getInstructor() {
         return instructor;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

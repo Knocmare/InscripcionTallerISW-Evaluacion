@@ -35,8 +35,8 @@ public class Alumno {
     }
 
     public String mostrarDatos() {
-        return "Alumno: " + nombre + " (" + id + ")\\n"
-                + "Semestre: " + semestre + "\\n"
+        return "Alumno: " + nombre + " (" + id + ")\n"
+                + "Semestre: " + semestre + "\n"
                 + "Programa: " + programa;
     }
 

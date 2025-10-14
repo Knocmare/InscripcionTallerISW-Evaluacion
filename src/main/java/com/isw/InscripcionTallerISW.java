@@ -1,6 +1,6 @@
 package com.isw;
 
-import com.isw.view.PantallaPrincipal;
+import com.isw.view.PantallaInscripcion;
 import javax.swing.SwingUtilities;
 
 /**
@@ -11,7 +11,7 @@ public class InscripcionTallerISW {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new PantallaPrincipal().setVisible(true);
+            new PantallaInscripcion().setVisible(true);
         });
     }
 }

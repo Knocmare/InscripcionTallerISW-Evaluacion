@@ -21,8 +21,8 @@ public class SistemaInscripcion {
                 LocalDate.of(2025, 3, 12), "10:00 - 12:00", new Instructor("Mtro. Ruiz"), 25));
         talleres.add(new Taller(2, "Bases de Datos", "Introducción a SQL y modelado",
                 LocalDate.of(2025, 3, 13), "09:00 - 11:00", new Instructor("Mtra. Gómez"), 20));
-        alumnos.add(new Alumno("A001", "Carlos Pérez", 5, "Ingeniería de Software"));
-        alumnos.add(new Alumno("A002", "Ana López", 4, "Sistemas Computacionales"));
+        alumnos.add(new Alumno("00000235678", "Carlos Pérez", 5, "Ingeniería de Software"));
+        alumnos.add(new Alumno("00000263591", "Ana López", 4, "Sistemas Computacionales"));
     }
 
     public List<Taller> obtenerTalleres() {
