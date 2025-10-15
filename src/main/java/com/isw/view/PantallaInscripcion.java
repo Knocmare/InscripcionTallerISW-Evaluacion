@@ -5,6 +5,7 @@ import com.isw.model.Alumno;
 import com.isw.model.Inscripcion;
 import com.isw.model.InscripcionException;
 import com.isw.model.Taller;
+import com.isw.observer.Observer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JList;
@@ -15,7 +16,7 @@ import javax.swing.ListSelectionModel;
  *
  * @author Ángel Ruíz García - 00000248171
  */
-public class PantallaInscripcion extends javax.swing.JFrame {
+public class PantallaInscripcion extends javax.swing.JFrame implements Observer {
 
     private TallerController controller;
     private JList<Taller> listaTaller;
@@ -23,9 +24,19 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     public PantallaInscripcion() {
         initComponents();
         controller = new TallerController();
+        controller.getSistema().addObserver(this);
         inicializarVista();
     }
-
+    
+    /**
+     * Se ejecuta cuando el modelo notifica un cambio
+     * @param mensaje 
+     */
+    @Override
+    public void update(String mensaje) {
+        JOptionPane.showMessageDialog(this, "Actualización del sistema: " + mensaje);
+    }
+    
     /**
      * Inicializa las listas, botones, y el Scroll.
      */
@@ -83,7 +94,6 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                     Inscripcion ins = controller.inscribir(id, taller.getId());
                     txaInfoAlumno.setText(ins.generarTicket());
                     txaDetallesTaller.setText(taller.detalles()); // Muestra detalles actualizados
-                    JOptionPane.showMessageDialog(PantallaInscripcion.this, "Inscripción realizada con éxito.");
                 } catch (InscripcionException ex) {
                     JOptionPane.showMessageDialog(PantallaInscripcion.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -327,4 +337,5 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     private javax.swing.JTextArea txaInfoAlumno;
     private javax.swing.JTextField txtID;
     // End of variables declaration//GEN-END:variables
+
 }

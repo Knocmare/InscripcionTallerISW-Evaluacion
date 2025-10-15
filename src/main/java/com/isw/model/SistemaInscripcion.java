@@ -1,5 +1,7 @@
 package com.isw.model;
 
+import com.isw.observer.Observable;
+import com.isw.observer.Observer;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +12,12 @@ import java.util.List;
  *
  * @author Ángel Ruíz García - 00000248171
  */
-public class SistemaInscripcion {
+public class SistemaInscripcion implements Observable {
 
     private List<Taller> talleres = new ArrayList<>();
     private List<Alumno> alumnos = new ArrayList<>();
     private List<Inscripcion> inscripciones = new ArrayList<>();
+    private List<Observer> observadores = new ArrayList<>();
 
     /**
      * Contructor que inicializa las listas con los datos.
@@ -96,6 +99,28 @@ public class SistemaInscripcion {
         taller.inscribirAlumno();
         Inscripcion ins = new Inscripcion(alumno, taller);
         inscripciones.add(ins);
+        
+        // Notificar a los observadores
+        notifyObservers("Nuevo inscrito en el taller de " + taller.getNombre());
+        
         return ins;
+    }
+
+    // Métodos de Observer personalizado
+    @Override
+    public void addObserver(Observer o) {
+        observadores.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        observadores.remove(o);
+    }
+
+    @Override
+    public void notifyObservers(String mensaje) {
+        for (Observer obs : observadores) {
+            obs.update(mensaje);
+        }
     }
 }

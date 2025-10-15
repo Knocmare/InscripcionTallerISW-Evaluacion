@@ -21,15 +21,38 @@ public class TallerController {
         sistema = new SistemaInscripcion();
     }
 
+    /**
+     * Obtiene una lista de talleres.
+     *
+     * @return Lista de talleres
+     */
     public List<Taller> obtenerTalleres() {
         return sistema.obtenerTalleres();
     }
 
+    /**
+     * Obtiene al alumno usando el ID ingresado.
+     *
+     * @param id ID ingresado
+     * @return Alumno encontrado
+     */
     public Alumno buscarAlumno(String id) {
         return sistema.buscarAlumno(id);
     }
 
+    /**
+     * Regresa la inscripcion creada.
+     *
+     * @param idAlumno ID del alumno
+     * @param idTaller ID del taller
+     * @return Inscripcion nueva
+     * @throws InscripcionException Si la inscripcion presenta un error
+     */
     public Inscripcion inscribir(String idAlumno, int idTaller) throws InscripcionException {
         return sistema.inscribir(idAlumno, idTaller);
+    }
+
+    public SistemaInscripcion getSistema() {
+        return sistema;
     }
 }
